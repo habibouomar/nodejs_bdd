@@ -8,7 +8,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const port = 8000;
 
-app.use(morgan())
+app.use(morgan("tiny"))
 app.use(cors())
 app.use(express.json())
 
@@ -29,6 +29,7 @@ const heroeSchema = new mongoose.Schema({
     isAlive: Boolean,
     age: Number,
     image: String
+
 })
 
 const HeroeModel = mongoose.model('Heroe', heroeSchema);
@@ -44,13 +45,66 @@ app.get('/heroes/:slug', function (req, res, next) {
 
 app.get('/heroes/:slug/powers', function (req, res, next) {
     const slug = req.params.slug
-    HeroeModel.find({ slug }).exec().then(resultat => { res.json(res - ultat[0].power) })
+    HeroeModel.find({ slug }).exec().then(resultat => { res.json(resultat[0].power) })
 })
 
-app.post('/heroes', (req, res, next) => {
-    console.log(req.body);
-    res.json({
-        new: req.body,
+app.post('/heroes', function (req, res, next) {
+    const body = req.body;
+
+    HeroeModel.find({ slug: body.slug }).exec().then(function (hero) {
+        console.log('hero', hero);
+        if (hero) {
+            res.status(404).send('the hero already exist')
+        } else {
+            next();
+        }
+    })
+}, (req, res, next) => {
+    const body = req.body
+    console.log(body);
+
+    const newHeroe = new HeroeModel(body)
+
+    newHeroe.save().then(resultat => {
+        res.json(resultat)
+    });
+});
+
+app.put('/heroes/:slug/powers', (req, res, next) => {
+    const body = req.body
+    console.log(body);
+
+    HeroeModel.updateOne({ slug: req.params.slug }, { $push: { power: body.power } }, function (err, result) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(result);
+        }
+    });
+});
+
+app.delete('/heroes/:slug', function (req, res, next) {
+    const slug = req.params.slug
+    console.log(slug);
+
+    HeroeModel.find({ slug }).exec().then(function (heros) {
+        console.log('heros', heros);
+        if (heros.length === 0) {
+            res.status(404).send('the hero do not exist')
+        } else {
+            next();
+        }
+    })
+
+}, (req, res, next) => {
+    const slug = req.params.slug
+    console.log(slug);
+
+    HeroeModel.deleteOne({ slug: slug }).then(resultat => {
+        res.json({
+         slug: slug,
+         statut: "effacé correctement"
+        })
     });
 });
 
