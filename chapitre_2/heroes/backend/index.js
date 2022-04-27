@@ -95,18 +95,55 @@ app.delete('/heroes/:slug', function (req, res, next) {
             next();
         }
     })
-
 }, (req, res, next) => {
     const slug = req.params.slug
     console.log(slug);
 
     HeroeModel.deleteOne({ slug: slug }).then(resultat => {
         res.json({
-         slug: slug,
-         statut: "effacé correctement"
+            slug: slug,
+            statut: "effacé correctement"
         })
     });
 });
+
+app.delete('/heroes/:slug/powers/:power', function (req, res, next) {
+    const slug = req.params.slug
+
+    HeroeModel.find({ slug }).exec().then(function (heros) {
+        console.log('heros', heros);
+        if (heros.length === 0) {
+            res.status(404).send('the hero do not exist')
+        } else {
+            next();
+        }
+    })
+}, (req, res, next) => {
+    const slug = req.params.slug
+    const power = req.params.power
+
+    HeroeModel.updateOne({ power }, { $pull: { power: req.params.power } }).then(resultat => {
+        res.json({
+            slug: slug,
+            power: [power],
+            statut: "pouvoir effacé correctement"
+        })
+    });
+});
+
+app.put('/heroes/:slug/', (req, res, next) => {
+    const body = req.body
+    console.log(body);
+
+    HeroeModel.updateOne({ slug: req.params.slug },body, function (err, result) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(result);
+        }
+    });
+});
+
 
 // HeroeModel.insertMany([
 //     {
