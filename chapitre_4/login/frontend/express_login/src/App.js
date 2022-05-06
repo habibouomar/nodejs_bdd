@@ -1,42 +1,33 @@
 import React from 'react';
-import './App.css';
+import './styles/home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Router from './router/router';
+import { NavLink } from "react-router-dom";
 
 export default function App() {
 
     return (
         <>
-        
-            <body className="d-flex h-100 text-center text-white bg-dark">
-
-                <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-                    
+            <body className="d-flex h-100vh text-center text-white bg-dark">
+                <div className="cover-container d-flex w-100 h-100vh p-3 mx-auto flex-column">
                     <header className="mb-auto">
                         <div>
                             <h3 className="float-md-start mb-0">Express Login</h3>
                             <nav className="nav nav-masthead justify-content-center float-md-end">
-                                <a className="nav-link active" aria-current="page" href="#">Home</a>
-                                <a className="nav-link" href="#">SignUp</a>
-                                <a className="nav-link" href="#">Login</a>
-                                <a className="nav-link" href="#">Admin</a>
+                                <NavLink className="nav-link active" aria-current="page" to="/">Home</NavLink>
+                                <NavLink className="nav-link" to="/login">Login</NavLink>
+                                <NavLink className="nav-link" to="/admin">Admin</NavLink>
+                                <NavLink className="nav-link" to="/signup">Signup</NavLink>
                             </nav>
                         </div>
                     </header>
 
-                    <main className="px-3">
-                        <h1>Welcome</h1>
-                        <p className="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
-                        <p className="lead">
-                            <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn more</a>
-                        </p>
-                    </main>
+                    <Router />
 
                     <footer className="mt-auto text-white-50">
-                        <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
+                        <p>The World Is Mine : <a href="https://habibouomar.github.io" target="_blank" className="text-white">Portfolio</a> - Accés Github <a href="https://urlz.fr/iba3" target="_blank" className="text-white">@habibouomar</a>.</p>
                     </footer>
-
                 </div>
-
             </body>
         </>
     )
