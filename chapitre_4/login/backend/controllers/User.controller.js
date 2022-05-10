@@ -52,7 +52,7 @@ router.post('/login', passport.authenticate('local'), function(req, res, next){
     if (!req.user) {
         res.status(401).send('The username or password is not correct')
     }
-    res.send('bievenue ' + req.user.surname)
+    res.json({message: 'ok'})
    
 })
 

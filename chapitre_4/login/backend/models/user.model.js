@@ -6,7 +6,7 @@ const UsersSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     surname: String,
-    dateOfBirth: { type: Date, required: true, trim: true }
+    dateOfBirth: { type: Date, required: true }
 })
 
 module.exports = mongoose.model('User', UsersSchema)

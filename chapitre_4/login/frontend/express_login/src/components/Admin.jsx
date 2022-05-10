@@ -23,7 +23,9 @@ export default function Admin() {
                         <div key=""> {info.email} </div>
                     )
                 })}
+                
         </div>
+
 
         
     )
